@@ -1,9 +1,15 @@
 {
   "name": "twvott",
   "version": "0.1.0",
+  "main": "dist/twvott.cjs.js",
+  "module": "dist/twvott.esm.js",
+  "types": "dist/twvott.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "tsc --watch",
-    "build": "tsc"
+    "build": "rollup -c"
   },
   "author": "TheWilley",
   "license": "MIT",
@@ -12,6 +18,10 @@
     "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "prettier": "3.3.3"
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-typescript": "^12.1.1",
+    "prettier": "3.3.3",
+    "rollup": "^4.24.4",
+    "tslib": "^2.8.1"
   }
 }

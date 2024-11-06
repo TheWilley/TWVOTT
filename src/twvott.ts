@@ -16,7 +16,7 @@ type TextLayers = {
   fontWeight: string;
 };
 
-class TWVOTT {
+export default class TWVOTT {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private pages: string[];
