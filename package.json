@@ -14,14 +14,12 @@
   "author": "TheWilley",
   "license": "MIT",
   "description": "The Worse Version Of Text Tv",
-  "dependencies": {
-    "typescript": "^5.6.3"
-  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-typescript": "^12.1.1",
     "prettier": "3.3.3",
     "rollup": "^4.24.4",
-    "tslib": "^2.8.1"
+    "tslib": "^2.8.1",
+    "typescript": "^5.6.3"
   }
 }
