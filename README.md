@@ -223,4 +223,4 @@ Navigates to the previous page.
 
 ## License
 
-[MIT](https://github.com/TheWilley/md-links-archiver/blob/main/LICENSE)
+[MIT](https://github.com/TheWilley/twvott/blob/main/LICENSE)
