@@ -12,7 +12,8 @@ textTV.addPage(1, `
     > ¶¶ with #green support for inline text colors #white and ##blue #red inline background colors
     > ¶¶ and other cool stuff like :b bold text :n or :i italic text.
     > 
-    > :c Here¶is¶some¶centered¶text
+    > :c Here¶is¶some¶centered¶text...
+    > :c :u ...and¶some¶underlined¶text
     >
     > ¶¶ #yellow Read more on page 2
 `);

@@ -14,6 +14,7 @@ type Layers = {
   backgroundColor: string;
   fontSize: number;
   fontWeight: string;
+  underline: boolean;
   centerText: boolean;
 };
 
@@ -120,6 +121,7 @@ export default class TWVOTT {
       fontSize: this.fontSize,
       fontWeight: '',
       centerText: false,
+      underline: false,
     };
 
     tokens.forEach((token) => {
@@ -209,6 +211,8 @@ export default class TWVOTT {
       layers.fontWeight = '';
     } else if (command === 'c') {
       layers.centerText = true;
+    } else if (command === 'u') {
+      layers.underline = true;
     } else if (!isNaN(+command)) {
       layers.fontSize = Number(command);
     }
@@ -241,6 +245,10 @@ export default class TWVOTT {
     if (layers.backgroundColor) {
       this.context.fillStyle = layers.backgroundColor;
       this.context.fillRect(x, y - 1, finalWidth, layers.fontSize);
+    }
+
+    if (layers.underline) {
+      this.context.fillRect(x, y + this.fontSize, textWidth, 2);
     }
 
     this.context.fillStyle = layers.textColor;

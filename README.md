@@ -207,6 +207,7 @@ Navigates to the previous page.
     - **Italic Text**: Use `:i` for italicized text.
     - **Normal Text**: Use `:n` to revert to normal text.
     - **Center Text**: Use `:c` to center text.
+    - **Underline Text**: Use `:u` to underline text.
   - **Font Size**:
     - Use `:number` to set the font size, where `number` is a specific size.
 - **Pixel Mode**:
