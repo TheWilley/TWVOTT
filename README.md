@@ -215,3 +215,12 @@ Navigates to the previous page.
   - Activated using `$`.
   - **Drawing**
     - Use `¶` for space, `0` for pixels, and specify colors with `#color`.
+
+## Changelog
+
+- **0.1.0** - First release
+- **0.2.0** - Added text centering, underline and striketrough commands
+
+## License
+
+[MIT](https://github.com/TheWilley/md-links-archiver/blob/main/LICENSE)
