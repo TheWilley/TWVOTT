@@ -14,6 +14,8 @@
   "author": "TheWilley",
   "license": "MIT",
   "description": "The Worse Version Of Text Tv",
+  "homepage": "https://github.com/TheWilley/TWVOTT",
+  "bugs": "https://github.com/TheWilley/TWVOTT/issues",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-typescript": "^12.1.1",
