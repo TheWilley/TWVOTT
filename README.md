@@ -208,6 +208,7 @@ Navigates to the previous page.
     - **Normal Text**: Use `:n` to revert to normal text.
     - **Center Text**: Use `:c` to center text.
     - **Underline Text**: Use `:u` to underline text.
+    - **Striketrough Text**: Use `:x` to striketrough text.
   - **Font Size**:
     - Use `:number` to set the font size, where `number` is a specific size.
 - **Pixel Mode**:

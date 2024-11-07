@@ -13,7 +13,9 @@ textTV.addPage(1, `
     > ¶¶ and other cool stuff like :b bold text :n or :i italic text.
     > 
     > :c Here¶is¶some¶centered¶text...
-    > :c :u ...and¶some¶underlined¶text
+    > :c :u and¶some¶underlined¶text...
+    >
+    > :c :x and¶some¶striketrough¶text
     >
     > ¶¶ #yellow Read more on page 2
 `);
