@@ -46,7 +46,7 @@ Lets look at an example:
 
 This creates the following image:
 
-![text](readme/text.png)
+![text](https://github.com/user-attachments/assets/553a753c-4fe8-4b6b-8695-12b3000338dd)
 
 The first thing you may notice is that every line starts with a `>`. This indicates that you're writing text on that line. If you do not provide it, no text will be rendered.
 
@@ -79,7 +79,7 @@ $ ¶¶ #red ¶¶¶0
 
 This creates the following image:
 
-![pixel](readme/pixel.png)
+![pixel](https://github.com/user-attachments/assets/f80afbcf-ff92-4b65-8841-1bb2dbce3c72)
 
 Just as with the text, the `¶` acts as empty space and `#` followed by a color changes the color. A `0` represents an actual pixel. You cannot change pixel size, it is locked to the font size you set on the `fontSize` option in the class construcctor.
 
