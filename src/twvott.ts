@@ -9,11 +9,12 @@ type Colors = {
   magenta: '#FF00FF';
   cyan: '#00FFFF';
 };
-type TextLayers = {
+type Layers = {
   textColor: string;
   backgroundColor: string;
   fontSize: number;
   fontWeight: string;
+  centerText: boolean;
 };
 
 export default class TWVOTT {
@@ -67,7 +68,7 @@ export default class TWVOTT {
    * Modifies the global font.
    * @param layers The text layer object
    */
-  private setFont(layers: TextLayers) {
+  private setFont(layers: Layers) {
     // Define font components
     const fontSize = `${layers.fontSize}px `;
     const fontFamily = 'monospace ';
@@ -118,6 +119,7 @@ export default class TWVOTT {
       backgroundColor: '',
       fontSize: this.fontSize,
       fontWeight: '',
+      centerText: false,
     };
 
     tokens.forEach((token) => {
@@ -178,7 +180,7 @@ export default class TWVOTT {
    * @param token The token to apply color to
    * @param layers An object defining text properties
    */
-  private applyColorTag(token: string, layers: any) {
+  private applyColorTag(token: string, layers: Layers) {
     const tagLength = token.match(/#+/)?.[0].length;
     const colorKey = token.slice(tagLength);
     const color =
@@ -196,7 +198,7 @@ export default class TWVOTT {
    * @param token The token to apply the command to
    * @param layers An object defining text properties
    */
-  private applyCommandTag(token: string, layers: any) {
+  private applyCommandTag(token: string, layers: Layers) {
     const command = token.slice(1);
 
     if (command === 'b') {
@@ -222,7 +224,7 @@ export default class TWVOTT {
     token: string,
     x: number,
     y: number,
-    layers: any
+    layers: Layers
   ): number {
     this.setFont(layers);
 
