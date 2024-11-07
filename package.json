@@ -1,6 +1,6 @@
 {
   "name": "twvott",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "dist/twvott.cjs.js",
   "module": "dist/twvott.esm.js",
   "types": "dist/twvott.d.ts",
