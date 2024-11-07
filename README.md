@@ -186,25 +186,30 @@ Navigates to the previous page.
 
 ### Text Formatting
 
-- **Text Colors**:
-  - Use `#color` to set the text color.
-- **Background Colors**:
-  - Use `##color` for inline background colors (e.g., `##red`).
-- **Supported colors**:
-  - `#white`
-  - `#black`
-  - `#red`
-  - `#green`
-  - `#blue`
-  - `#yellow`
-  - `#magenta`
-  - `#cyan`
-- **Text Styling**:
-  - **Bold Text**: Use `:b` to make text bold.
-  - **Italic Text**: Use `:i` for italicized text.
-  - **Normal Text**: Use `:n` to revert to normal text.
-- **Font Size**:
-  - Use `:number` to set the font size, where `number` is a specific size.
+- **Text Mode**
+  - Activated using `>`
+  - **Colors**
+    - **Text Colors**:
+      - Use `#color` to set the text color.
+    - **Background Colors**:
+      - Use `##color` for inline background colors (e.g., `##red`).
+    - **Supported colors**:
+      - `#white`
+      - `#black`
+      - `#red`
+      - `#green`
+      - `#blue`
+      - `#yellow`
+      - `#magenta`
+      - `#cyan`
+  - **Text Styling**:
+    - **Bold Text**: Use `:b` to make text bold.
+    - **Italic Text**: Use `:i` for italicized text.
+    - **Normal Text**: Use `:n` to revert to normal text.
+    - **Center Text**: Use `:c` to center text.
+  - **Font Size**:
+    - Use `:number` to set the font size, where `number` is a specific size.
 - **Pixel Mode**:
   - Activated using `$`.
-  - Use `¶` for space, `0` for pixels, and specify colors with `#color`.
+  - **Drawing**
+    - Use `¶` for space, `0` for pixels, and specify colors with `#color`.

@@ -207,6 +207,8 @@ export default class TWVOTT {
       layers.fontWeight = 'italic';
     } else if (command === 'n') {
       layers.fontWeight = '';
+    } else if (command === 'c') {
+      layers.centerText = true;
     } else if (!isNaN(+command)) {
       layers.fontSize = Number(command);
     }
@@ -231,6 +233,10 @@ export default class TWVOTT {
     const textWidth = this.context.measureText(token).width;
     const spaceWidth = this.context.measureText(' ').width;
     const finalWidth = textWidth + spaceWidth;
+
+    if (layers.centerText) {
+      x = (this.canvas.width - textWidth) / 2;
+    }
 
     if (layers.backgroundColor) {
       this.context.fillStyle = layers.backgroundColor;
