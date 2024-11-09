@@ -17,8 +17,8 @@ const textTV = new TWVOTT(targetCanvas, options?, pages?);
     - **`width`** (Number): Width of the canvas in pixels.
     - **`height`** (Number): Height of the canvas in pixels.
     - **`fontSize`** (Number): Font size of the text in pixels.
-    - **`errorPage`** (String): The error page to show on pages without content
-    - **`preload`** (Boolean): If the pages should be [preloaded](#async-preloadpages)
+    - **`errorPage`** (String): The error page to show on pages without content.
+    - **`preload`** (Boolean): If the pages should be [preloaded].(#async-preloadpages)
 - **`pages`** (Object Array):
   - An array of objects representing pages. Can be used in place of the [`addPage`](#addpagepagenumber-content) function. An object requires the following properties:
     - **`pageNumber`** (Number): The page number to assign to the new page.
@@ -72,11 +72,11 @@ Clears the screen and fills the background with the specified color.
 
 Preloads pages before rendering them. This means that instead of re-rendering all pages everytime they are only rendered
 once, then stored and loaded from memory. This is more efficent if you're using alot of image tags, but generally unnecessary if you
-only write text and pixels.
+only use text and pixel tags.
 
-Additionally, there is no longer any need to use await when loading pages, since all renders are already done.
+Additionally, there is no longer any need to use await when loading pages, since all renders are done.
 
-_Note: The canvas will produce a flickering effect when loading. You may want to hide it until it is done preloading_
+_Note: The canvas will produce a flickering effect when preloading. You may want to hide it until it is done preloading_
 
 - **Example:**
 
@@ -165,8 +165,9 @@ Navigates to the previous page.
 ### **Image Mode**
 
 - **Activation**: `@`
-  - Syntax: `[width] [height] [padding] [url]`
-    - `width` is the image width
-    - `height` is the image height
-    - `padding` is the amount of spacing between the left side border and the image
-    - `url` is the URL to a non [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) restricted image
+  **Syntax**
+  - Use the following syntax: `[width] [height] [padding] [url]`
+  - `width` is the image width
+  - `height` is the image height
+  - `padding` is the amount of spacing between the left side border and the image
+  - `url` is the URL to a [non-CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) restricted image
