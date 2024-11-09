@@ -12,10 +12,10 @@ You can install the library via NPM:
 npm install twvott
 ```
 
-## Documents
+## Links
 
-- Class documentation - [[link]](docs/docs.md)
-- Writing content - [[link]](docs/writing.md)
+- [Documentation](https://github.com/TheWilley/TWVOTT/blob/main/docs/docs.md)
+- [Writing Content](https://github.com/TheWilley/TWVOTT/blob/main/docs/writing.md)
 
 ## Changelog
 
