@@ -1,4 +1,9 @@
-type Options = { width: number; height: number; fontSize: number };
+type Options = {
+  width: number;
+  height: number;
+  fontSize: number;
+  errorPage: string;
+};
 type Colors = {
   white: '#FFFFFF';
   black: '#000000';
@@ -26,13 +31,15 @@ export default class TWVOTT {
   public currentPage: number;
   private fontSize: number;
   private colors: Colors;
+  private errorPage: string;
 
   constructor(
     canvasId: string,
     options: Options = {
-      width: 0,
-      height: 0,
-      fontSize: 0,
+      width: 300,
+      height: 300,
+      fontSize: 12,
+      errorPage: '#red > Page Not Found',
     }
   ) {
     // Setup canvas
@@ -43,13 +50,16 @@ export default class TWVOTT {
     }
     this.context = context;
 
+    // Other options
+    this.errorPage = options.errorPage;
+
     // Set up canvas dimensions and font settings
-    this.canvas.width = options.width || 320;
-    this.canvas.height = options.height || 240;
+    this.canvas.width = options.width;
+    this.canvas.height = options.height;
     this.pages = [];
     this.currentPage = 1;
 
-    this.fontSize = options.fontSize || 14;
+    this.fontSize = options.fontSize;
     this.colors = {
       white: '#FFFFFF',
       black: '#000000',
@@ -395,7 +405,7 @@ export default class TWVOTT {
       this.clearScreen();
       await this.renderPage(this.pages[pageNumber]);
     } else {
-      await this.renderPage('> #red Page Not Found');
+      await this.renderPage(this.errorPage);
     }
     this.currentPage = pageNumber;
   }

@@ -3,7 +3,7 @@
 ## TWVOTT Class
 
 ```javascript
-const textTV = new TWVOTT(targetCanvas, options);
+const textTV = new TWVOTT(targetCanvas, options?);
 ```
 
 ### Parameters
@@ -13,10 +13,11 @@ const textTV = new TWVOTT(targetCanvas, options);
   - The `id` of the target `<canvas>` HTML element where the text will be displayed.
 
 - **`options`** (Object):
-  - A configuration object with the following properties:
+  - A configuration object which can have the following properties:
     - **`width`** (Number): Width of the canvas in pixels.
     - **`height`** (Number): Height of the canvas in pixels.
     - **`fontSize`** (Number): Font size of the text in pixels.
+    - **`errorPage`** (String): The error page to show on pages without content
 
 ### Example Usage
 
