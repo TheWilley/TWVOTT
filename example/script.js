@@ -1,6 +1,7 @@
 const textTV = new TWVOTT("textTVCanvas", { width: 500, height: 500, fontSize: 12 });
 
 textTV.addPage(1, `
+    >
     > ¶¶ :30 #green Welcome!
     >
     >
@@ -21,6 +22,7 @@ textTV.addPage(1, `
 `);
 
 textTV.addPage(2, `
+    >
     > ¶¶ You can also draw, wow!
     >
     $ ¶¶¶0¶0¶0¶0¶0¶
@@ -35,6 +37,17 @@ textTV.addPage(2, `
     $ ¶¶ #red ¶0¶¶¶0
     $ ¶¶ #red ¶¶0¶0
     $ ¶¶ #red ¶¶¶0
+`);
+
+textTV.addPage(3, `
+    >
+    > You can also draw images from a URL
+    >
+    @ 100 100 0 https://fastly.picsum.photos/id/473/200/300.jpg?hmac=WYG6etF60iOJeGoFVY1hVDMakbBRS32ZDGNkVZhF6-8
+    > 
+    > Here is the same image but in another width
+    >
+    @ 200 200 0 https://fastly.picsum.photos/id/473/200/300.jpg?hmac=WYG6etF60iOJeGoFVY1hVDMakbBRS32ZDGNkVZhF6-8
 `);
 
 textTV.loadPage(1);

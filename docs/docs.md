@@ -120,3 +120,12 @@ Navigates to the previous page.
   - Use `¶` for space.
   - Use `0` for pixels.
   - Specify colors with `#color`.
+
+### **Image Mode**
+
+- **Activation**: `@`
+  - Syntax: `[width] [height] [padding] [url]`
+    - `width` is the image width
+    - `height` is the image height
+    - `padding` is the amount of spacing between the left side border and the image
+    - `url` is the URL to a non [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) restricted image

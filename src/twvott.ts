@@ -82,38 +82,39 @@ export default class TWVOTT {
    * Renders a page of content using custom syntax.
    * @param content The content to render
    */
-  private renderPage(content: string) {
+  private async renderPage(content: string) {
     const lines = content.split('\n');
-    let y = 0;
+    let yRef: { y: number } = { y: 0 };
     this.clearScreen();
 
-    lines.forEach((line) => {
-      this.parseLine(line, y);
-      y += this.fontSize;
-    });
+    for (const line of lines) {
+      await this.parseLine(line, yRef);
+    }
   }
 
   /**
    * Parses a line from page contents.
    * @param line The line to parse
-   * @param y The y coordinate to insert the parsed line
+   * @param yRef The y coordinate reference used to insert the parsed line
    */
-  private parseLine(line: string, y: number) {
+  private async parseLine(line: string, yRef: { y: number }) {
     const tokens = line.split(' ').filter((token) => token !== '');
 
     if (tokens[0] === '>') {
-      this.handleTextLine(tokens.slice(1), y);
+      this.handleTextLine(tokens.slice(1), yRef);
     } else if (tokens[0] === '$') {
-      this.handlePixelLine(tokens.slice(1), y);
+      this.handlePixelLine(tokens.slice(1), yRef);
+    } else if (tokens[0] === '@') {
+      await this.handleImageLine(tokens.slice(1), yRef);
     }
   }
 
   /**
    * Handles text tokens (>).
    * @param tokens The tokens to handle
-   * @param y The y coordinate to insert the parsed line
+   * @param yRef The y coordinate reference used to insert the parsed line
    */
-  private handleTextLine(tokens: string[], y: number) {
+  private handleTextLine(tokens: string[], yRef: { y: number }) {
     let x = 0;
 
     let layers = {
@@ -134,17 +135,20 @@ export default class TWVOTT {
       } else if (this.isCommandTag(token)) {
         this.applyCommandTag(token, layers);
       } else {
-        x = this.drawTextToken(token, x, y, layers);
+        x = this.drawTextToken(token, x, yRef.y, layers);
       }
     });
+
+    // Add height
+    yRef.y += this.fontSize;
   }
 
   /**
    * Handles pixel tokens ($).
    * @param tokens The tokens to handle
-   * @param y The y coordinate to insert the parsed line
+   * @param y The y coordinate reference used to insert the parsed line
    */
-  private handlePixelLine(tokens: string[], y: number) {
+  private handlePixelLine(tokens: string[], yRef: { y: number }) {
     let x = 0;
     let fontSize = this.fontSize;
     let currentColor = '#FFFFFF';
@@ -156,9 +160,33 @@ export default class TWVOTT {
       } else if (this.isCommandTag(token)) {
         fontSize = this.getFontSizeFromTag(token, fontSize);
       } else {
-        x = this.drawPixelToken(token, x, y, fontSize);
+        x = this.drawPixelToken(token, x, yRef.y, fontSize);
       }
     });
+
+    // Add height
+    yRef.y += this.fontSize;
+  }
+
+  /**
+   * Handles image tokens (@).
+   * @param tokens The tokens to handle
+   * @param y The y coordinate reference used to insert the parsed line
+   */
+  private async handleImageLine(tokens: string[], yRef: { y: number }) {
+    const isNumeric = (value: string) => /^-?\d+$/.test(value);
+
+    const width = isNumeric(tokens[0]) ? Number(tokens[0]) : 100;
+    const height = isNumeric(tokens[1]) ? Number(tokens[1]) : 100;
+    const padding = isNumeric(tokens[2])
+      ? this.context.measureText(' '.repeat(Number(tokens[2]))).width
+      : 0;
+    const src = tokens[3];
+    const data = await this.fetchImage(src);
+    this.context.drawImage(data, 0 + padding, yRef.y, width, height);
+
+    // Add height
+    yRef.y += height;
   }
 
   /**
@@ -177,6 +205,46 @@ export default class TWVOTT {
    */
   private isCommandTag(token: string): boolean {
     return token.startsWith(':');
+  }
+
+  /**
+   * Fetches an image from a URL.
+   */
+  private async fetchImage(url: string): Promise<HTMLImageElement> {
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch image: ${response.status} ${response.statusText}`
+        );
+      }
+
+      // Convert the response to a Blob
+      const blob = await response.blob();
+
+      // Create an HTMLImageElement from the blob
+      const img = await this.loadImageFromBlob(blob);
+
+      return img;
+    } catch (error) {
+      console.error('Error fetching image:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Loads an image from a blob.
+   * @param blob The blob to load.
+   * @returns A ImageElement.
+   */
+  private loadImageFromBlob(blob: Blob): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = URL.createObjectURL(blob);
+    });
   }
 
   /**
@@ -322,12 +390,12 @@ export default class TWVOTT {
    * Load and render a specific page content.
    * @param pageNumber The page to render
    */
-  public loadPage(pageNumber: number) {
+  public async loadPage(pageNumber: number) {
     if (this.pages[pageNumber]) {
       this.clearScreen();
-      this.renderPage(this.pages[pageNumber]);
+      await this.renderPage(this.pages[pageNumber]);
     } else {
-      this.renderPage('> #red Page Not Found');
+      await this.renderPage('> #red Page Not Found');
     }
     this.currentPage = pageNumber;
   }
