@@ -3,7 +3,7 @@
 ## TWVOTT Class
 
 ```javascript
-const textTV = new TWVOTT(targetCanvas, options?);
+const textTV = new TWVOTT(targetCanvas, options?, pages?);
 ```
 
 ### Parameters
@@ -18,15 +18,38 @@ const textTV = new TWVOTT(targetCanvas, options?);
     - **`height`** (Number): Height of the canvas in pixels.
     - **`fontSize`** (Number): Font size of the text in pixels.
     - **`errorPage`** (String): The error page to show on pages without content
+    - **`preload`** (Boolean): If the pages should be [preloaded](#async-preloadpages)
+- **`pages`** (Object Array):
+  - An array of objects representing pages. Can be used in place of the [`addPage`](#addpagepagenumber-content) function. An object requires the following properties:
+    - **`pageNumber`** (Number): The page number to assign to the new page.
+    - **`content`** (String): The content to display on the page.
 
 ### Example Usage
 
 ```javascript
-const textTV = new TWVOTT('textTVCanvas', {
-  width: 500,
-  height: 500,
-  fontSize: 12,
-});
+const textTV = new TWVOTT(
+  'textTVCanvas',
+  {
+    width: 500,
+    height: 500,
+    fontSize: 12,
+    errorPage: '> #red Nothing on this page!',
+  },
+  [
+    {
+      pageNumber: 0,
+      content: '> Welcome to page 0!',
+    },
+    {
+      pageNumber: 1,
+      content: '> Welcome to page 1!',
+    },
+    {
+      pageNumber: 2,
+      content: '> Welcome to page 2!',
+    },
+  ]
+);
 ```
 
 ## Methods
@@ -45,7 +68,24 @@ Clears the screen and fills the background with the specified color.
   textTV.clearScreen('#000000'); // Clears the screen with black color
   ```
 
-### `loadPage(pageNumber)`
+### `async preloadPages()`
+
+Preloads pages before rendering them. This means that instead of re-rendering all pages everytime they are only rendered
+once, then stored and loaded from memory. This is more efficent if you're using alot of image tags, but generally unnecessary if you
+only write text and pixels.
+
+Additionally, there is no longer any need to use await when loading pages, since all renders are already done.
+
+_Note: The canvas will produce a flickering effect when loading. You may want to hide it until it is done preloading_
+
+- **Example:**
+
+```javascript
+await textTV.preloadPages();
+loadPage(1);
+```
+
+### `async loadPage(pageNumber)`
 
 Loads and renders a specific page content on the canvas.
 
@@ -56,7 +96,7 @@ Loads and renders a specific page content on the canvas.
 - **Example:**
 
   ```javascript
-  textTV.loadPage(3); // Loads and displays page number 3
+  await textTV.loadPage(3); // Loads and displays page number 3
   ```
 
 ### `addPage(pageNumber, content)`

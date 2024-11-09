@@ -3,6 +3,7 @@ type Options = {
   height: number;
   fontSize: number;
   errorPage: string;
+  preload: boolean;
 };
 type Colors = {
   white: '#FFFFFF';
@@ -32,16 +33,26 @@ export default class TWVOTT {
   private fontSize: number;
   private colors: Colors;
   private errorPage: string;
+  private preload: boolean;
+  private preloadedPages: HTMLImageElement[];
+  private preloadedErrorPage: HTMLImageElement;
 
   constructor(
     canvasId: string,
-    options: Options = {
-      width: 300,
-      height: 300,
-      fontSize: 12,
-      errorPage: '#red > Page Not Found',
-    }
+    options: Options,
+    pages?: { pageNumber: number; content: string }[]
   ) {
+    const finalOptions = {
+      ...{
+        width: 300,
+        height: 300,
+        fontSize: 12,
+        errorPage: '> #red Page Not Found',
+        preload: false,
+      },
+      ...options,
+    };
+
     // Setup canvas
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     const context = this.canvas.getContext('2d');
@@ -51,15 +62,18 @@ export default class TWVOTT {
     this.context = context;
 
     // Other options
-    this.errorPage = options.errorPage;
+    this.errorPage = finalOptions.errorPage;
+    this.preloadedErrorPage = new Image();
+    this.preload = finalOptions.preload;
+    this.preloadedPages = [];
 
     // Set up canvas dimensions and font settings
-    this.canvas.width = options.width;
-    this.canvas.height = options.height;
+    this.canvas.width = finalOptions.width;
+    this.canvas.height = finalOptions.height;
     this.pages = [];
     this.currentPage = 1;
 
-    this.fontSize = options.fontSize;
+    this.fontSize = finalOptions.fontSize;
     this.colors = {
       white: '#FFFFFF',
       black: '#000000',
@@ -74,6 +88,13 @@ export default class TWVOTT {
     // Set a fixed-width font
     this.context.font = `${this.fontSize}px monospace`;
     this.context.textBaseline = 'top';
+
+    // Add pages if the argument is provided
+    if (pages?.length) {
+      for (const page of pages) {
+        this.addPage(page.pageNumber, page.content);
+      }
+    }
   }
 
   /**
@@ -225,7 +246,7 @@ export default class TWVOTT {
       const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error(
+        console.error(
           `Failed to fetch image: ${response.status} ${response.statusText}`
         );
       }
@@ -238,8 +259,7 @@ export default class TWVOTT {
 
       return img;
     } catch (error) {
-      console.error('Error fetching image:', error);
-      throw error;
+      throw new Error(`Error fetching image: ${error}`);
     }
   }
 
@@ -403,11 +423,73 @@ export default class TWVOTT {
   public async loadPage(pageNumber: number) {
     if (this.pages[pageNumber]) {
       this.clearScreen();
-      await this.renderPage(this.pages[pageNumber]);
+
+      if (this.preload) {
+        this.loadPreloadedPage(pageNumber);
+      } else {
+        await this.renderPage(this.pages[pageNumber]);
+      }
     } else {
-      await this.renderPage(this.errorPage);
+      if (this.preload) {
+        this.loadPreloadedPage(0, true);
+      } else {
+        await this.renderPage(this.errorPage);
+      }
     }
     this.currentPage = pageNumber;
+  }
+
+  /**
+   * Loads a page from the array of preloaded pages.
+   * @param pageNumber The page to load
+   * @param exists If the page exists or not
+   */
+  private loadPreloadedPage(pageNumber: number, exists?: boolean) {
+    if (exists) {
+      this.context.drawImage(this.preloadedErrorPage, 0, 0);
+    } else {
+      try {
+        this.context.drawImage(this.preloadedPages[pageNumber], 0, 0);
+      } catch (e) {
+        throw new Error(
+          'Could not preload page. Use the preloadPage function before loading a page or set preload option to false.'
+        );
+      }
+    }
+  }
+
+  /**
+   * Preload predefined pages.
+   */
+  public async preloadPages() {
+    if (!this.preload) {
+      throw new Error(
+        'Do not use the preloadPages function unless the preload option is set true!'
+      );
+    }
+    if (!this.pages.length) {
+      throw new Error('No pages to preload!');
+    }
+
+    // Render all pages
+    for (const page of this.pages) {
+      if (page) {
+        await this.renderPage(page);
+        const dataURL = this.canvas.toDataURL('image/png');
+        const img = new Image();
+        img.src = dataURL;
+        this.preloadedPages.push(img);
+      } else {
+        this.preloadedPages.push(new Image());
+      }
+    }
+
+    // Render error page separately
+    await this.renderPage(this.errorPage);
+    const dataURL = this.canvas.toDataURL('image/png');
+    const img = new Image();
+    img.src = dataURL;
+    this.preloadedErrorPage = img;
   }
 
   /**
