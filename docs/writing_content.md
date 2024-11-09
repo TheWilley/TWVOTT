@@ -1,12 +1,13 @@
 # Writing content
 
-There are two modes: "text" and "pixel".
+There are tree modes: "text", "pixel" and "image".
 
 ## Text Mode
 
 Lets look at an example:
 
 ```
+>
 > ¶¶ :30 #green Welcome!
 >
 >
@@ -38,6 +39,7 @@ Lastly, there are colors. You can change the text color with one hashtag followe
 Lets look at an example:
 
 ```
+>
 > ¶¶ You can also draw, wow!
 >
 $ ¶¶¶0¶0¶0¶0¶0¶
@@ -59,3 +61,24 @@ This creates the following image:
 ![pixel](https://github.com/user-attachments/assets/f80afbcf-ff92-4b65-8841-1bb2dbce3c72)
 
 Lines with pixels must start with a `$`. Just as with the text, the `¶` acts as empty space and `#` followed by a color changes the color. A `0` represents an actual pixel. You cannot change pixel size, it is locked to the font size you set on the `fontSize` option in the class constructor.
+
+## Image Mode
+
+Lets look at an example:
+
+```
+>
+> ¶¶ You can also draw images from a URL
+>
+@ 100 100 3 https://fastly.picsum.photos/id/473/200/300.jpg?hmac=WYG6etF60iOJeGoFVY1hVDMakbBRS32ZDGNkVZhF6-8
+>
+> ¶¶ Here is the same image but in another width
+>
+@ 200 200 3 https://fastly.picsum.photos/id/473/200/300.jpg?hmac=WYG6etF60iOJeGoFVY1hVDMakbBRS32ZDGNkVZhF6-8
+```
+
+This creates the following image:
+
+![image](https://github.com/user-attachments/assets/1af5fdb3-7142-4d54-8f9f-685cd01c7e83)
+
+Images are activated using the `@` symbol. Four arguments are then needed to render the image: `width`, `height`, `padding` and `url`. These are added after each other in the aftermentioned order. The first image has a width and height of 200, a padding of 3 (how far to the right it will be) and a image from lorem picsum.
