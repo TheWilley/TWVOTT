@@ -15,7 +15,7 @@ npm install twvott
 ## Links
 
 - [Documentation](https://github.com/TheWilley/TWVOTT/blob/main/docs/docs.md)
-- [Writing Content](https://github.com/TheWilley/TWVOTT/blob/main/docs/writing.md)
+- [Writing Content](https://github.com/TheWilley/TWVOTT/blob/main/docs/writing_content.md)
 
 ## Changelog
 
