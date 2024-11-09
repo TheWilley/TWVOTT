@@ -41,13 +41,13 @@ textTV.addPage(2, `
 
 textTV.addPage(3, `
     >
-    > You can also draw images from a URL
+    > ¶¶ You can also draw images from a URL
     >
-    @ 100 100 0 https://fastly.picsum.photos/id/473/200/300.jpg?hmac=WYG6etF60iOJeGoFVY1hVDMakbBRS32ZDGNkVZhF6-8
+    @ 100 100 3 https://fastly.picsum.photos/id/473/200/300.jpg?hmac=WYG6etF60iOJeGoFVY1hVDMakbBRS32ZDGNkVZhF6-8
     > 
-    > Here is the same image but in another width
+    > ¶¶ Here is the same image but in another width
     >
-    @ 200 200 0 https://fastly.picsum.photos/id/473/200/300.jpg?hmac=WYG6etF60iOJeGoFVY1hVDMakbBRS32ZDGNkVZhF6-8
+    @ 200 200 3 https://fastly.picsum.photos/id/473/200/300.jpg?hmac=WYG6etF60iOJeGoFVY1hVDMakbBRS32ZDGNkVZhF6-8
 `);
 
 textTV.loadPage(1);
