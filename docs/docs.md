@@ -18,7 +18,8 @@ const textTV = new TWVOTT(targetCanvas, options?, pages?);
     - **`height`** (Number): Height of the canvas in pixels.
     - **`fontSize`** (Number): Font size of the text in pixels.
     - **`errorPage`** (String): The error page to show on pages without content.
-    - **`preload`** (Boolean): If the pages should be [preloaded].(#async-preloadpages)
+    - **`preload`** (Boolean): If the pages should be [preloaded](#async-preloadpages).
+    - **`lineHeight`** (Number): The line height between each line.
 - **`pages`** (Object Array):
   - An array of objects representing pages. Can be used in place of the [`addPage`](#addpagepagenumber-content) function. An object requires the following properties:
     - **`pageNumber`** (Number): The page number to assign to the new page.
@@ -112,6 +113,21 @@ Adds a new page with the specified page number and content.
 
   ```javascript
   textTV.addPage(5, '> Welcome to page 5!'); // Adds page 5 with content
+  ```
+
+### `edit(pageNumber, content)`
+
+Edits a page with the specified page number and content. It serves as an alias for [`addPage`](#addpagepagenumber-content).
+
+- **Parameters:**
+
+  - **`pageNumber`** (Number): The number of the page to edit.
+  - **`content`** (String): The content to display on the page.
+
+- **Example:**
+
+  ```javascript
+  textTV.editPage(5, '> Edit to page 5!'); // Edit page 5 with content
   ```
 
 ### `nextPage()`
