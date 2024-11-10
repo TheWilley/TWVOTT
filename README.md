@@ -23,6 +23,7 @@ npm install twvott
 - **0.2.0** - Added text centering, underline and striketrough commands
 - **0.3.0** - Added image support and error page customization
 - **0.4.0** - Added preload support
+- **0.5.0** - Added lineHeight option, an editPage function and fixed multiple bugs regarding line coordinates
 
 ## License
 
