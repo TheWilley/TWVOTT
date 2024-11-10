@@ -25,6 +25,7 @@ npm install twvott
 - **0.4.0** - Added preload support
 - **0.5.0** - Added lineHeight option, an editPage function and fixed multiple bugs regarding line coordinates
 - **0.5.1** - Options are no longer required
+- **0.5.2** - Implemented 0.5.1 as I forgot to build before publishing
 
 ## License
 
