@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "tsc --watch",
     "build": "rollup -c",
-    "publish": "npm run build && npm publish"
+    "npm:publish": "npm run build && npm publish"
   },
   "author": "TheWilley",
   "license": "MIT",
