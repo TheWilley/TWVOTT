@@ -508,6 +508,15 @@ export default class TWVOTT {
   }
 
   /**
+   * Modify a page in the library (alias for addPage)
+   * @param pageNumber The page number
+   * @param content The content of the page
+   */
+  public modifyPage(pageNumber: number, content: string) {
+    this.addPage(pageNumber, content);
+  }
+
+  /**
    * Goes to the next page
    */
   public nextPage() {
