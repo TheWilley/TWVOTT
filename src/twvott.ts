@@ -2,6 +2,7 @@ type Options = {
   width: number;
   height: number;
   fontSize: number;
+  lineHeight: number;
   errorPage: string;
   preload: boolean;
 };
@@ -26,12 +27,13 @@ type Layers = {
 };
 
 export default class TWVOTT {
+  public currentPage: number;
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private pages: string[];
-  public currentPage: number;
   private fontSize: number;
   private colors: Colors;
+  private lineHeight: number;
   private errorPage: string;
   private preload: boolean;
   private preloadedPages: HTMLImageElement[];
@@ -39,7 +41,7 @@ export default class TWVOTT {
 
   constructor(
     canvasId: string,
-    options: Options,
+    options?: Options,
     pages?: { pageNumber: number; content: string }[]
   ) {
     const finalOptions = {
@@ -48,6 +50,7 @@ export default class TWVOTT {
         height: 300,
         fontSize: 12,
         errorPage: '> #red Page Not Found',
+        lineHeight: 2,
         preload: false,
       },
       ...options,
@@ -66,6 +69,7 @@ export default class TWVOTT {
     this.preloadedErrorPage = new Image();
     this.preload = finalOptions.preload;
     this.preloadedPages = [];
+    this.lineHeight = finalOptions.lineHeight;
 
     // Set up canvas dimensions and font settings
     this.canvas.width = finalOptions.width;
@@ -171,7 +175,7 @@ export default class TWVOTT {
     });
 
     // Add height
-    yRef.y += this.fontSize;
+    yRef.y += this.fontSize + this.lineHeight;
   }
 
   /**
@@ -196,7 +200,7 @@ export default class TWVOTT {
     });
 
     // Add height
-    yRef.y += this.fontSize;
+    yRef.y += this.fontSize + this.lineHeight;
   }
 
   /**
@@ -217,7 +221,7 @@ export default class TWVOTT {
     this.context.drawImage(data, 0 + padding, yRef.y, width, height);
 
     // Add height
-    yRef.y += height;
+    yRef.y += height + this.lineHeight;
   }
 
   /**
