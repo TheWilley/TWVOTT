@@ -1,10 +1,10 @@
 type Options = {
-  width: number;
-  height: number;
-  fontSize: number;
-  lineHeight: number;
-  errorPage: string;
-  preload: boolean;
+  width?: number;
+  height?: number;
+  fontSize?: number;
+  lineHeight?: number;
+  errorPage?: string;
+  preload?: boolean;
 };
 type Colors = {
   white: '#FFFFFF';
