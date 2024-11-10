@@ -175,7 +175,7 @@ export default class TWVOTT {
     });
 
     // Add height
-    yRef.y += this.fontSize + this.lineHeight;
+    yRef.y += layers.fontSize + this.lineHeight;
   }
 
   /**

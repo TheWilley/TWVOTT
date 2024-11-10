@@ -9,8 +9,6 @@ Lets look at an example:
 ```
 >
 > ¶¶ :30 #green Welcome!
->
->
 > ¶¶ TWVOTT (The Worse Version Of Text TV) is a custom class I've
 > ¶¶ built to communicate info trough the canvas element. The name is
 > ¶¶ confusing on purpose...

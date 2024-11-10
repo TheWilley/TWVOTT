@@ -3,8 +3,6 @@ const textTV = new TWVOTT("textTVCanvas", { width: 500, height: 500, fontSize: 1
 textTV.addPage(1, `
     >
     > ¶¶ :30 #green Welcome!
-    >
-    >
     > ¶¶ TWVOTT (The Worse Version Of Text TV) is a custom class I've 
     > ¶¶ built to communicate info trough the canvas element. The name is
     > ¶¶ confusing on purpose...
