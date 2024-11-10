@@ -200,7 +200,7 @@ export default class TWVOTT {
     });
 
     // Add height
-    yRef.y += this.fontSize + this.lineHeight;
+    yRef.y += this.fontSize;
   }
 
   /**
