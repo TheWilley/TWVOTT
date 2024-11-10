@@ -115,9 +115,9 @@ Adds a new page with the specified page number and content.
   textTV.addPage(5, '> Welcome to page 5!'); // Adds page 5 with content
   ```
 
-### `edit(pageNumber, content)`
+### `modifyPage(pageNumber, content)`
 
-Edits a page with the specified page number and content. It serves as an alias for [`addPage`](#addpagepagenumber-content).
+Modifies a page with the specified page number and content. It serves as an alias for [`addPage`](#addpagepagenumber-content).
 
 - **Parameters:**
 
