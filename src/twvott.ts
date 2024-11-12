@@ -469,7 +469,7 @@ export default class TWVOTT {
    * @param dataURL The image dataURL
    * @returns The image
    */
-  private async loadImage(dataURL: string) {
+  private async loadImageFromDataURL(dataURL: string) {
     const img = new Image();
     img.src = dataURL;
     await new Promise((resolve, reject) => {
