@@ -96,14 +96,14 @@ Loads and renders a specific page content on the canvas.
   await textTV.loadPage(3); // Loads and displays page number 3
   ```
 
-### `addPage(pageNumber, content)`
+### `async addPage(pageNumber, content)`
 
 Adds a new page with the specified page number and content.
 
 - **Parameters:**
 
   - **`pageNumber`** (Number): The page number to assign to the new page.
-  - **`content`** (String): The content to display on the page.
+  - **`content`** (String | Function | Promise): The content to display on the page, can be a string, function or promise returning a string.
 
 - **Example:**
 
