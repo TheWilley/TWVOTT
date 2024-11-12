@@ -27,6 +27,7 @@ type Layers = {
 };
 
 export default class TWVOTT {
+  // Variables
   private canvas: HTMLCanvasElement;
   private offscreenCanvas: OffscreenCanvas;
   private context: CanvasRenderingContext2D;
@@ -533,21 +534,45 @@ export default class TWVOTT {
   }
 
   /**
-   * Add a page to the library
-   * @param pageNumber The page number
+   * Adds a page with static string content.
+   * @param pageNumber The page where content will be added
    * @param content The content of the page
    */
-  public addPage(pageNumber: number, content: string) {
-    this.pages[pageNumber] = content;
-  }
-
+  public addPage(pageNumber: number, content: string): void;
   /**
-   * Modify a page in the library (alias for addPage)
-   * @param pageNumber The page number
-   * @param content The content of the page
+   *  Adds a page with synchronous content (a function returning a string).
+   * @param pageNumber The page where content will be added
+   * @param content A function that returns the string content.
    */
-  public modifyPage(pageNumber: number, content: string) {
-    this.addPage(pageNumber, content);
+  public addPage(pageNumber: number, content: () => string): void;
+  /**
+   * Adds a page with asynchronous content (a Promise-based function).
+   * @param pageNumber The page where content will be added
+   * @param content A function returning a Promise that resolves to a string content
+   */
+  /**
+   * Implementation of addPage to handle different types of content.
+   * @param pageNumber - The page where content will be added
+   * @param content - The page content, which can be a string, a function returning a string, or a function returning a Promise
+   */
+  public async addPage(
+    pageNumber: number,
+    content: () => Promise<string>
+  ): Promise<void>;
+  public async addPage(
+    pageNumber: number,
+    content: (() => Promise<string>) | (() => string) | string
+  ): Promise<void> {
+    if (typeof content === 'string') {
+      this.pages[pageNumber] = content;
+    } else if (typeof content === 'function') {
+      const result = content();
+      if (result instanceof Promise) {
+        this.pages[pageNumber] = await result;
+      } else {
+        this.pages[pageNumber] = result;
+      }
+    }
   }
 
   /**
