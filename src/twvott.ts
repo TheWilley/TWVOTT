@@ -27,7 +27,6 @@ type Layers = {
 };
 
 export default class TWVOTT {
-  public currentPage: number;
   private canvas: HTMLCanvasElement;
   private offscreenCanvas: OffscreenCanvas;
   private context: CanvasRenderingContext2D;
@@ -41,6 +40,7 @@ export default class TWVOTT {
   private preloadedPages: HTMLImageElement[];
   private preloadedErrorPage: HTMLImageElement;
   private useOffscreenContext: Boolean;
+  public currentPage: number;
 
   constructor(
     canvasId: string,
@@ -436,6 +436,25 @@ export default class TWVOTT {
   }
 
   /**
+   * Loads a page from the array of preloaded pages.
+   * @param pageNumber The page to load
+   * @param exists If the page exists or not
+   */
+  private loadPreloadedPage(pageNumber: number, exists?: boolean) {
+    if (exists) {
+      this.getContext().drawImage(this.preloadedErrorPage, 0, 0);
+    } else {
+      try {
+        this.getContext().drawImage(this.preloadedPages[pageNumber], 0, 0);
+      } catch (e) {
+        throw new Error(
+          'Could not preload page. Use the preloadPage function before loading a page or set preload option to false.'
+        );
+      }
+    }
+  }
+
+  /**
    * Clears screen with background color.
    * @param color The color to fill the background of
    */
@@ -465,25 +484,6 @@ export default class TWVOTT {
       }
     }
     this.currentPage = pageNumber;
-  }
-
-  /**
-   * Loads a page from the array of preloaded pages.
-   * @param pageNumber The page to load
-   * @param exists If the page exists or not
-   */
-  private loadPreloadedPage(pageNumber: number, exists?: boolean) {
-    if (exists) {
-      this.getContext().drawImage(this.preloadedErrorPage, 0, 0);
-    } else {
-      try {
-        this.getContext().drawImage(this.preloadedPages[pageNumber], 0, 0);
-      } catch (e) {
-        throw new Error(
-          'Could not preload page. Use the preloadPage function before loading a page or set preload option to false.'
-        );
-      }
-    }
   }
 
   /**
