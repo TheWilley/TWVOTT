@@ -465,6 +465,21 @@ export default class TWVOTT {
   }
 
   /**
+   * Loads an image from a dataURL.
+   * @param dataURL The image dataURL
+   * @returns The image
+   */
+  private async loadImage(dataURL: string) {
+    const img = new Image();
+    img.src = dataURL;
+    await new Promise((resolve, reject) => {
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+    });
+    return img;
+  }
+
+  /**
    * Preload predefined pages.
    */
   public async preloadPages() {
@@ -482,8 +497,8 @@ export default class TWVOTT {
       if (page) {
         await this.renderPage(page);
         const dataURL = this.canvas.toDataURL('image/png');
-        const img = new Image();
-        img.src = dataURL;
+        const img = await this.loadImage(dataURL);
+
         this.preloadedPages.push(img);
       } else {
         this.preloadedPages.push(new Image());
