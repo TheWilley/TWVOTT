@@ -465,21 +465,6 @@ export default class TWVOTT {
   }
 
   /**
-   * Loads an image from a dataURL.
-   * @param dataURL The image dataURL
-   * @returns The image
-   */
-  private async loadImageFromDataURL(dataURL: string) {
-    const img = new Image();
-    img.src = dataURL;
-    await new Promise((resolve, reject) => {
-      img.onload = () => resolve(img);
-      img.onerror = reject;
-    });
-    return img;
-  }
-
-  /**
    * Preload predefined pages.
    */
   public async preloadPages() {
@@ -496,10 +481,12 @@ export default class TWVOTT {
     for (const page of this.pages) {
       if (page) {
         await this.renderPage(page);
-        const dataURL = this.canvas.toDataURL('image/png');
-        const img = await this.loadImageFromDataURL(dataURL);
-
-        this.preloadedPages.push(img);
+        this.canvas.toBlob(async (blob) => {
+          if (blob) {
+            const img = await this.loadImageFromBlob(blob);
+            this.preloadedPages.push(img);
+          }
+        }, 'image/png');
       } else {
         this.preloadedPages.push(new Image());
       }
@@ -507,9 +494,12 @@ export default class TWVOTT {
 
     // Render error page separately
     await this.renderPage(this.errorPage);
-    const dataURL = this.canvas.toDataURL('image/png');
-    const img = await this.loadImageFromDataURL(dataURL);
-    this.preloadedErrorPage = img;
+    this.canvas.toBlob(async (blob) => {
+      if (blob) {
+        const img = await this.loadImageFromBlob(blob);
+        this.preloadedErrorPage = img;
+      }
+    }, 'image/png');
   }
 
   /**
