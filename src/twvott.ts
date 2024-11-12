@@ -45,7 +45,7 @@ export default class TWVOTT {
   constructor(
     canvasId: string,
     options?: Options,
-    pages?: { pageNumber: number; content: string }[]
+    pages?: { pageNumber: number; content: string | (() => string) }[]
   ) {
     const finalOptions = {
       ...{
@@ -114,7 +114,11 @@ export default class TWVOTT {
     // Add pages if the argument is provided
     if (pages?.length) {
       for (const page of pages) {
-        this.addPage(page.pageNumber, page.content);
+        if (typeof page.content === 'function') {
+          this.addPage(page.pageNumber, page.content());
+        } else {
+          this.addPage(page.pageNumber, page.content);
+        }
       }
     }
   }
