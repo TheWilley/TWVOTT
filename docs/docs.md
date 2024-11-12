@@ -75,10 +75,6 @@ Preloads pages before rendering them. This means that instead of re-rendering al
 once, then stored and loaded from memory. This is more efficent if you're using alot of image tags, but generally unnecessary if you
 only use text and pixel tags.
 
-Additionally, there is no longer any need to use await when loading pages, since all renders are done.
-
-_Note: The canvas will produce a flickering effect when preloading. You may want to hide it until it is done preloading_
-
 - **Example:**
 
 ```javascript

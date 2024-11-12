@@ -29,7 +29,9 @@ type Layers = {
 export default class TWVOTT {
   public currentPage: number;
   private canvas: HTMLCanvasElement;
+  private offscreenCanvas: OffscreenCanvas;
   private context: CanvasRenderingContext2D;
+  private offscreenContext: OffscreenCanvasRenderingContext2D;
   private pages: string[];
   private fontSize: number;
   private colors: Colors;
@@ -38,6 +40,7 @@ export default class TWVOTT {
   private preload: boolean;
   private preloadedPages: HTMLImageElement[];
   private preloadedErrorPage: HTMLImageElement;
+  private useOffscreenContext: Boolean;
 
   constructor(
     canvasId: string,
@@ -64,12 +67,25 @@ export default class TWVOTT {
     }
     this.context = context;
 
+    // Setup offscreen canvas
+    const offscreen = new OffscreenCanvas(
+      finalOptions.width,
+      finalOptions.height
+    );
+    this.offscreenCanvas = offscreen;
+    const offscreenContext = offscreen.getContext('2d');
+    if (!offscreenContext) {
+      throw new Error('Offscreen canvas context could not be initialized');
+    }
+    this.offscreenContext = offscreenContext;
+
     // Other options
     this.errorPage = finalOptions.errorPage;
     this.preloadedErrorPage = new Image();
     this.preload = finalOptions.preload;
     this.preloadedPages = [];
     this.lineHeight = finalOptions.lineHeight;
+    this.useOffscreenContext = false;
 
     // Set up canvas dimensions and font settings
     this.canvas.width = finalOptions.width;
@@ -92,6 +108,8 @@ export default class TWVOTT {
     // Set a fixed-width font
     this.context.font = `${this.fontSize}px monospace`;
     this.context.textBaseline = 'top';
+    this.offscreenContext.font = `${this.fontSize}px monospace`;
+    this.offscreenContext.textBaseline = 'top';
 
     // Add pages if the argument is provided
     if (pages?.length) {
@@ -110,7 +128,7 @@ export default class TWVOTT {
     const fontSize = `${layers.fontSize}px `;
     const fontFamily = 'monospace ';
     const fontWeight = `${layers.fontWeight} `;
-    this.context.font = `${fontWeight}${fontSize}${fontFamily}`;
+    this.getContext().font = `${fontWeight}${fontSize}${fontFamily}`;
   }
 
   /**
@@ -191,7 +209,7 @@ export default class TWVOTT {
     tokens.forEach((token) => {
       if (this.isColorTag(token)) {
         currentColor = this.getColorFromTag(token);
-        this.context.fillStyle = currentColor;
+        this.getContext().fillStyle = currentColor;
       } else if (this.isCommandTag(token)) {
         fontSize = this.getFontSizeFromTag(token, fontSize);
       } else {
@@ -214,11 +232,11 @@ export default class TWVOTT {
     const width = isNumeric(tokens[0]) ? Number(tokens[0]) : 100;
     const height = isNumeric(tokens[1]) ? Number(tokens[1]) : 100;
     const padding = isNumeric(tokens[2])
-      ? this.context.measureText(' '.repeat(Number(tokens[2]))).width
+      ? this.getContext().measureText(' '.repeat(Number(tokens[2]))).width
       : 0;
     const src = tokens[3];
     const data = await this.fetchImage(src);
-    this.context.drawImage(data, 0 + padding, yRef.y, width, height);
+    this.getContext().drawImage(data, 0 + padding, yRef.y, width, height);
 
     // Add height
     yRef.y += height + this.lineHeight;
@@ -340,8 +358,8 @@ export default class TWVOTT {
   ): number {
     this.setFont(layers);
 
-    const textWidth = this.context.measureText(token).width;
-    const spaceWidth = this.context.measureText(' ').width;
+    const textWidth = this.getContext().measureText(token).width;
+    const spaceWidth = this.getContext().measureText(' ').width;
     const finalWidth = textWidth + spaceWidth;
 
     if (layers.centerText) {
@@ -349,22 +367,22 @@ export default class TWVOTT {
     }
 
     if (layers.backgroundColor) {
-      this.context.fillStyle = layers.backgroundColor;
-      this.context.fillRect(x, y - 1, finalWidth, layers.fontSize);
+      this.getContext().fillStyle = layers.backgroundColor;
+      this.getContext().fillRect(x, y - 1, finalWidth, layers.fontSize);
     }
 
     if (layers.underline) {
-      this.context.fillStyle = layers.textColor;
-      this.context.fillRect(x, y + layers.fontSize, finalWidth, 2);
+      this.getContext().fillStyle = layers.textColor;
+      this.getContext().fillRect(x, y + layers.fontSize, finalWidth, 2);
     }
 
     if (layers.striketrough) {
-      this.context.fillStyle = layers.textColor;
-      this.context.fillRect(x, y + layers.fontSize / 2, finalWidth, 1);
+      this.getContext().fillStyle = layers.textColor;
+      this.getContext().fillRect(x, y + layers.fontSize / 2, finalWidth, 1);
     }
 
-    this.context.fillStyle = layers.textColor;
-    this.context.fillText(token, x, y);
+    this.getContext().fillStyle = layers.textColor;
+    this.getContext().fillText(token, x, y);
 
     return x + finalWidth;
   }
@@ -406,7 +424,7 @@ export default class TWVOTT {
   ): number {
     for (const character of token) {
       if (character === '0') {
-        this.context.fillRect(x, y, fontSize, fontSize);
+        this.getContext().fillRect(x, y, fontSize, fontSize);
       }
       x += fontSize;
     }
@@ -418,8 +436,8 @@ export default class TWVOTT {
    * @param color The color to fill the background of
    */
   public clearScreen(color = this.colors.black) {
-    this.context.fillStyle = color;
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.getContext().fillStyle = color;
+    this.getContext().fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   /**
@@ -452,10 +470,10 @@ export default class TWVOTT {
    */
   private loadPreloadedPage(pageNumber: number, exists?: boolean) {
     if (exists) {
-      this.context.drawImage(this.preloadedErrorPage, 0, 0);
+      this.getContext().drawImage(this.preloadedErrorPage, 0, 0);
     } else {
       try {
-        this.context.drawImage(this.preloadedPages[pageNumber], 0, 0);
+        this.getContext().drawImage(this.preloadedPages[pageNumber], 0, 0);
       } catch (e) {
         throw new Error(
           'Could not preload page. Use the preloadPage function before loading a page or set preload option to false.'
@@ -477,16 +495,20 @@ export default class TWVOTT {
       throw new Error('No pages to preload!');
     }
 
+    // Since we don't want to render on the normal canvas
+    this.useOffscreenContext = true;
+
     // Render all pages
     for (const page of this.pages) {
       if (page) {
         await this.renderPage(page);
-        this.canvas.toBlob(async (blob) => {
-          if (blob) {
-            const img = await this.loadImageFromBlob(blob);
-            this.preloadedPages.push(img);
-          }
-        }, 'image/png');
+        const blob = await this.offscreenCanvas.convertToBlob({
+          type: 'image/png',
+        });
+        if (blob) {
+          const img = await this.loadImageFromBlob(blob);
+          this.preloadedPages.push(img);
+        }
       } else {
         this.preloadedPages.push(new Image());
       }
@@ -494,12 +516,16 @@ export default class TWVOTT {
 
     // Render error page separately
     await this.renderPage(this.errorPage);
-    this.canvas.toBlob(async (blob) => {
-      if (blob) {
-        const img = await this.loadImageFromBlob(blob);
-        this.preloadedErrorPage = img;
-      }
-    }, 'image/png');
+    const blob = await this.offscreenCanvas.convertToBlob({
+      type: 'image/png',
+    });
+    if (blob) {
+      const img = await this.loadImageFromBlob(blob);
+      this.preloadedErrorPage = img;
+    }
+
+    // Since we now want to render on the normal canvas
+    this.useOffscreenContext = false;
   }
 
   /**
@@ -532,5 +558,18 @@ export default class TWVOTT {
    */
   public previousPage() {
     this.loadPage(this.currentPage - 1);
+  }
+
+  /**
+   * Retrives a canvas context
+   * @param offscreen If the offscreen context should be used
+   * @returns The context
+   */
+  private getContext() {
+    if (this.useOffscreenContext) {
+      return this.offscreenContext;
+    } else {
+      return this.context;
+    }
   }
 }
