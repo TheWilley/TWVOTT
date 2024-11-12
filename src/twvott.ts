@@ -497,7 +497,7 @@ export default class TWVOTT {
       if (page) {
         await this.renderPage(page);
         const dataURL = this.canvas.toDataURL('image/png');
-        const img = await this.loadImage(dataURL);
+        const img = await this.loadImageFromDataURL(dataURL);
 
         this.preloadedPages.push(img);
       } else {
@@ -508,8 +508,7 @@ export default class TWVOTT {
     // Render error page separately
     await this.renderPage(this.errorPage);
     const dataURL = this.canvas.toDataURL('image/png');
-    const img = new Image();
-    img.src = dataURL;
+    const img = await this.loadImageFromDataURL(dataURL);
     this.preloadedErrorPage = img;
   }
 
