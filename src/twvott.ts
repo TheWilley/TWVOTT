@@ -43,11 +43,7 @@ export default class TWVOTT {
   private useOffscreenContext: Boolean;
   public currentPage: number;
 
-  constructor(
-    canvasId: string,
-    options?: Options,
-    pages?: { pageNumber: number; content: string | (() => string) }[]
-  ) {
+  constructor(canvasId: string, options?: Options) {
     const finalOptions = {
       ...{
         width: 300,
@@ -111,17 +107,6 @@ export default class TWVOTT {
     this.context.textBaseline = 'top';
     this.offscreenContext.font = `${this.fontSize}px monospace`;
     this.offscreenContext.textBaseline = 'top';
-
-    // Add pages if the argument is provided
-    if (pages?.length) {
-      for (const page of pages) {
-        if (typeof page.content === 'function') {
-          this.addPage(page.pageNumber, page.content());
-        } else {
-          this.addPage(page.pageNumber, page.content);
-        }
-      }
-    }
   }
 
   /**
@@ -572,6 +557,24 @@ export default class TWVOTT {
       } else {
         this.pages[pageNumber] = result;
       }
+    }
+  }
+
+  /**
+   * Adds multiple pages from an array of objects.
+   * @param pageContents An object containing the pagenumber and content
+   */
+  public async addPages(pageContents: {
+    pageNumber: number;
+    content: (() => Promise<string>) | (() => string) | string;
+  }): Promise<void> {
+    // Ensure pageContents is an array
+    if (!Array.isArray(pageContents)) {
+      throw new TypeError('addPages expects an array of PageContent objects');
+    }
+
+    for (const page of pageContents) {
+      await this.addPage(page.pageNumber, page.content);
     }
   }
 
