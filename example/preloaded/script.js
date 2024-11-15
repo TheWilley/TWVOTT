@@ -21,6 +21,8 @@ textTV.addPages([
         >
         > :c :x and¶some¶striketrough¶text
         >
+        > ¶¶ This is page :p d d d
+        >
         > ¶¶ #yellow Read more on page 2
     `
     }, {

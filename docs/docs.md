@@ -28,29 +28,12 @@ const textTV = new TWVOTT(targetCanvas, options?, pages?);
 ### Example Usage
 
 ```javascript
-const textTV = new TWVOTT(
-  'textTVCanvas',
-  {
-    width: 500,
-    height: 500,
-    fontSize: 12,
-    errorPage: '> #red Nothing on this page!',
-  },
-  [
-    {
-      pageNumber: 0,
-      content: '> Welcome to page 0!',
-    },
-    {
-      pageNumber: 1,
-      content: '> Welcome to page 1!',
-    },
-    {
-      pageNumber: 2,
-      content: '> Welcome to page 2!',
-    },
-  ]
-);
+const textTV = new TWVOTT('textTVCanvas', {
+  width: 500,
+  height: 500,
+  fontSize: 12,
+  errorPage: '> #red Nothing on this page!',
+});
 ```
 
 ## Methods
@@ -109,6 +92,35 @@ Adds a new page with the specified page number and content.
 
   ```javascript
   textTV.addPage(5, '> Welcome to page 5!'); // Adds page 5 with content
+  ```
+
+### `async addPages(pageContents)`
+
+Adds multiple new page with the specified page number and content.
+
+- **Parameters:**
+
+  - **pageContent**: An array of objects, where each object consists of the following properties:
+    - **`pageNumber`** (Number): The page number to assign to the new page.
+    - **`content`** (String | Function | Promise): The content to display on the page, can be a string, function or promise returning a string.
+
+- **Example:**
+
+  ```javascript
+  textTV.addPages([
+    {
+      pageNumber: 5,
+      content: '> Welcome to page 5!',
+    },
+    {
+      pageNumber: 6,
+      content: '> Welcome to page 6!',
+    },
+    {
+      pageNumber: 7,
+      content: '> Welcome to page 7!',
+    },
+  ]);
   ```
 
 ### `modifyPage(pageNumber, content)`
