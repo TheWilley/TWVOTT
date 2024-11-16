@@ -28,6 +28,7 @@ npm install twvott
 - **0.5.2** - Implemented 0.5.1 as I forgot to build before publishing
 - **0.5.3** - Fixed bug where preloaded pages would be added before finishing rendering
 - **0.6.0** - Removed flicker when preloading and added callback support for page contents in "pages" parameter
+- **0.7.0** - Added new function for adding multiple pages as well as a new tag to insert data
 
 ## License
 
