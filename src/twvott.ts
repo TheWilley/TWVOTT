@@ -178,7 +178,10 @@ export default class TWVOTT {
       } else if (this.isCommandTag(token)) {
         this.applyCommandTag(token, layers);
       } else {
-        x = this.drawTextToken(token, x, yRef.y, layers);
+        const processedToken = this.isInsertTag(token)
+          ? this.applyInsertTag(token)
+          : token;
+        x = this.drawTextToken(processedToken, x, yRef.y, layers);
       }
     });
 
@@ -248,6 +251,15 @@ export default class TWVOTT {
    */
   private isCommandTag(token: string): boolean {
     return token.startsWith(':');
+  }
+
+  /**
+   * Check if the token is a insert tag (:).
+   * @param token The token to check.
+   * @returns A boolean value indicating if the token is a insert tag
+   */
+  private isInsertTag(token: string): boolean {
+    return token.startsWith('^');
   }
 
   /**
@@ -329,6 +341,36 @@ export default class TWVOTT {
       layers.striketrough = true;
     } else if (!isNaN(+command)) {
       layers.fontSize = Number(command);
+    }
+  }
+
+  /**
+   * Replaces a token with data based on the command.
+   * @param token The token to replace
+   */
+  private applyInsertTag(token: string) {
+    const command = token.slice(1);
+
+    if (command === 'p') {
+      return String(this.currentPage);
+    } else if (command === 'pc') {
+      return String(this.pages.length);
+    } else if (command === 'd') {
+      return new Date().toLocaleDateString('en-US');
+    } else if (command === 't') {
+      return new Date().toLocaleTimeString('en-US');
+    } else if (command.startsWith('r')) {
+      const range = command.slice(1).split('-');
+      const min = parseInt(range[0], 10);
+      const max = parseInt(range[1], 10);
+
+      if (!isNaN(min) && !isNaN(max) && min <= max) {
+        return String(Math.floor(Math.random() * (max - min + 1)) + min);
+      } else {
+        return 'Invalid range';
+      }
+    } else {
+      return token;
     }
   }
 

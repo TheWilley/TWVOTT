@@ -21,7 +21,9 @@ textTV.addPages([
         >
         > :c :x and¶some¶striketrough¶text
         >
-        > ¶¶ This is page :p d d d
+        > ¶¶ :b You can also insert data:
+        > ¶¶ This is page ^p of ^pc and todays date is ^d and a random
+        > ¶¶ number between 1-99 is ^r1-9 and the current time is ^t
         >
         > ¶¶ #yellow Read more on page 2
     `

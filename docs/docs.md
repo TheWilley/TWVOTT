@@ -164,8 +164,8 @@ Navigates to the previous page.
 
 - **Activation**: `>`
 - **Colors**
-  - **Text Colors**: Use `#color` to set the text color.
-  - **Background Colors**: Use `##color` for inline background colors (e.g., `##red`).
+  - **Text Colors**: Use `#[color]` to set the text color.
+  - **Background Colors**: Use `##[color]` for inline background colors (e.g., `##red`).
   - **Supported Colors**:
     - `#white`, `#black`, `#red`, `#green`, `#blue`, `#yellow`, `#magenta`, `#cyan`
 - **Text Styling**
@@ -176,7 +176,13 @@ Navigates to the previous page.
   - **Underline Text**: `:u` to underline text.
   - **Strikethrough Text**: `:x` for strikethrough text.
 - **Font Size**
-  - Use `:number` to set the font size (replace `number` with a specific size).
+  - Use `:[number]` to set the font size (replace `number` with a specific size).
+- **Inserts**
+  - **Current Page**: `^p` for the current page number.
+  - **Number of Pages**: `^pc` for the total number of pages.
+  - **Date**: `^d` for todays date.
+  - **Time**: `^t` for current time.
+  - **Random Number**: `^r[number]-[number]` for a random number between two ranges.
 
 ### **Pixel Mode**
 
