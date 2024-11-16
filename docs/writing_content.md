@@ -32,6 +32,8 @@ Next up, there is a `:30` at the first row. The `:` character acts as a "command
 
 Lastly, there are colors. You can change the text color with one hashtag followed by a color name, for example: `#green`. Two hashtags instead modify the background color, for example: `##green`.
 
+Please see the [docs](https://github.com/TheWilley/TWVOTT/blob/main/docs/docs.md) file for a complete list of tags.
+
 ## Pixel Mode
 
 Lets look at an example:
