@@ -606,17 +606,25 @@ export default class TWVOTT {
    * Adds multiple pages from an array of objects.
    * @param pageContents An object containing the pagenumber and content
    */
-  public async addPages(pageContents: {
-    pageNumber: number;
-    content: (() => Promise<string>) | (() => string) | string;
-  }): Promise<void> {
-    // Ensure pageContents is an array
-    if (!Array.isArray(pageContents)) {
-      throw new TypeError('addPages expects an array of PageContent objects');
-    }
-
+  public async addPages(
+    pageContents: {
+      pageNumber: number;
+      content: (() => Promise<string>) | (() => string) | string;
+    }[]
+  ): Promise<void> {
     for (const page of pageContents) {
-      await this.addPage(page.pageNumber, page.content);
+      let content: string;
+
+      if (typeof page.content === 'string') {
+        content = page.content;
+      } else if (typeof page.content === 'function') {
+        const result = page.content();
+        content = result instanceof Promise ? await result : result;
+      } else {
+        throw new Error('Unsupported content type');
+      }
+
+      this.addPage(page.pageNumber, content);
     }
   }
 
